@@ -1,0 +1,5 @@
+module iniNet {
+    header "iniNet.h"
+    header "INL_external.h"
+    export *
+}

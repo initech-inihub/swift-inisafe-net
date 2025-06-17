@@ -1,0 +1,6 @@
+module inicore {
+  umbrella header "inicore.h"
+
+  export *
+  module * { export * }
+}

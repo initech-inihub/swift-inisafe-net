@@ -1,0 +1,15 @@
+#include <inicore/ICL_cgi.h>
+#include <inicore/ICL_compress.h>
+#include <inicore/ICL_config.h>
+#include <inicore/ICL_cpv.h>
+#include <inicore/ICL_encode.h>
+#include <inicore/ICL_error.h>
+#include <inicore/ICL_ldap.h>
+#include <inicore/ICL_license.h>
+#include <inicore/ICL_log.h>
+#include <inicore/ICL_module_verify.h>
+#include <inicore/ICL_network.h>
+#include <inicore/ICL_ocsp.h>
+#include <inicore/ICL_smartcard.h>
+#include <inicore/ICL_string.h>
+#include <inicore/ICL_unimap.h>

@@ -1,0 +1,282 @@
+#ifndef HEADER_PRIME_EC_H
+#define HEADER_PRIME_EC_H
+
+#include "prime_arith.h"
+#include "ecurve.h"
+
+
+/*!
+* \brief
+* P-224 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Affine coordinates)
+*/
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+/*!
+* \brief
+* P224 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P224AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* P224 °î¼± Affine ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_Fp_ECC_P224AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a);
+
+/*!
+* \brief
+* P-224 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Jacobian coordinates)
+*/
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è mixed ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P224PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è general ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P224PC2(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT_PC *b);
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_Fp_ECC_P224PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a);
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è Double-and-Add ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P224PC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è Montgomery ladder ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P224PC_Mont(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* P224 °î¼± Jacobian ÁÂÇ¥°è Fixed-base comb ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P224PC_Fbc(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_BIGINT *x);
+
+/*!
+* \brief
+* P-256 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Affine coordinates)
+*/
+
+/*!
+* \brief
+* P256 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P256AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* P256 °î¼± Affine ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_Fp_ECC_P256AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a);
+
+/*!
+* \brief
+* P-256 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Jacobian coordinates)
+*/
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è mixed ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P256PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è general ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_Fp_ECC_P256PC2(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT_PC *b);
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_Fp_ECC_P256PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a);
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è Double-and-Add ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P256PC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è Montgomery ladder ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P256PC_Mont(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* P256 °î¼± Jacobian ÁÂÇ¥°è Fixed-base comb ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_Fp_ECC_P256PC_Fbc(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_BIGINT *x);
+
+
+#ifdef  __cplusplus
+}
+#endif
+
+#endif /* #ifndef HEADER_PRIME_EC_H */
+

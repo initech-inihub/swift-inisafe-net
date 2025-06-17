@@ -1,0 +1,281 @@
+#ifndef HEADER_POLY_EC_H
+#define HEADER_POLY_EC_H
+
+#include "poly_arith.h"
+#include "ecpoint.h"
+#include "ecurve.h"
+
+/*!
+* \brief
+* K-233 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Affine coordinates)
+*/
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+/*!
+* \brief
+* K233 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K233AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* K233 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_F2m_ECC_K233AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a);
+
+/*!
+* \brief
+* K-233 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Lopez-Dahab coordinates)
+*/
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è mixed ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K233PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è general ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K233PC2(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT_PC *b); /* 13M + 4S */
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_F2m_ECC_K233PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a);
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è Double-and-Add ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K233PC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è Montgomery ladder ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K233PC_Mont(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* K233 °î¼± LD ÁÂÇ¥°è Fixed-base comb ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K233PC_Fbc(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_BIGINT *x);
+
+/*!
+* \brief
+* K-283 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Affine coordinates)
+*/
+
+/*!
+* \brief
+* K283 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K283AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* K283 °î¼± Affine ÁÂÇ¥°è ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_F2m_ECC_K283AC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a);
+
+/*!
+* \brief
+* K-283 °î¼±¿¡ ´ëÇÑ Å¸¿ø°î¼± ¿¬»ê (Lopez-Dahab coordinates)
+*/
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è mixed ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K283PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT *b);
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è general ECADD
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param b
+* Å¸¿ø°î¼±»ó¿¡¼­ µ¡¼À ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Add_F2m_ECC_K283PC2(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a, ISC_ECPOINT_PC *b); /* 13M + 4S */
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è ECDBL
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ µÎ¹è ¿¬»êÇÒ ÁÂÇ¥
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Dbl_F2m_ECC_K283PC(ISC_ECPOINT_PC *out, ISC_ECURVE *curve, ISC_ECPOINT_PC *a);
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è Double-and-Add ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K283PC(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è Montgomery ladder ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param a
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ ÁÂÇ¥
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K283PC_Mont(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_ECPOINT *a, ISC_BIGINT *x);
+
+/*!
+* \brief
+* K283 °î¼± LD ÁÂÇ¥°è Fixed-base comb ECSM
+* \param out
+* ¸®ÅÏµÉ ÁÂÇ¥
+* \param curve
+* Å¸¿ø°î¼±
+* \param x
+* Å¸¿ø°î¼±»ó¿¡¼­ °ö¼À ¿¬»êÇÒ biginteger
+* \returns
+* -# ISC_SUCCESS : Success
+*/
+ISC_INTERNAL ISC_STATUS isc_Mtp_F2m_ECC_K283PC_Fbc(ISC_ECPOINT *out, ISC_ECURVE *curve, ISC_BIGINT *x);
+
+
+#ifdef  __cplusplus
+}
+#endif
+
+#endif /* #ifndef HEADER_POLY_EC_H */
