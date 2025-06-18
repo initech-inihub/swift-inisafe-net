@@ -1,10 +1,16 @@
+//
+//  InisafeNet.swift
+//
+//
+//  Created by zongbeen.han on 2025/06/17.
+//
+
 import iniNet
-import Foundation
 
 public class InisafeNet {
     public init() {}
     
-    @discardableResult // 반환값을 사용하지 않아도 경고 발생X
+    @discardableResult
     public func initialize(type: Int, configPath: String, licensePath: String) -> Int32 {
         return configPath.withCString { confCString in
             licensePath.withCString { licCString in
@@ -25,7 +31,7 @@ public class InisafeNet {
         return validCtx
     }
     
-    @discardableResult // 반환값을 사용하지 않아도 경고 발생X
+    @discardableResult
     public func setClientVersion(ctx: UnsafeMutablePointer<net_ctx>, version: String) -> Int32 {
         return version.withCString { cString in
             INL_SetClientVer(ctx, UnsafeMutablePointer(mutating: cString))
@@ -38,7 +44,7 @@ public class InisafeNet {
     }
 
     
-    @discardableResult // 반환값을 사용하지 않아도 경고 발생X
+    @discardableResult
     public func freeCtx(_ ctx: UnsafeMutablePointer<net_ctx>?) -> Int32? {
         guard let ctx = ctx else {
             return nil
@@ -84,7 +90,7 @@ public class InisafeNet {
         return HandshakeManager()
     }
 
-//TODO: - 추후 개발
+//TODO: - KeyFix, KeyExchange
     /*
     public static func keyFixManager() -> KeyFixManager {
         return KeyFixManager()

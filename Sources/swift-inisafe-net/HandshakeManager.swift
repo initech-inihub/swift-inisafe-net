@@ -8,7 +8,6 @@
 
 
 import iniNet
-import Foundation
 
 public class HandshakeManager {
     
