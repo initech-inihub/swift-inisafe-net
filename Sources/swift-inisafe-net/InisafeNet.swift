@@ -86,17 +86,17 @@ public class InisafeNet {
         return Data(bytes: pt, count: Int(plaintextLen))
     }
     
-    public static func handshakeManager() -> HandshakeManager {
+    public func handshakeManager() -> HandshakeManager {
         return HandshakeManager()
     }
 
 //TODO: - KeyFix, KeyExchange
     /*
-    public static func keyFixManager() -> KeyFixManager {
+    public func keyFixManager() -> KeyFixManager {
         return KeyFixManager()
     }
 
-    public static func keyExchangeManager() -> KeyExchangeManager {
+    public func keyExchangeManager() -> KeyExchangeManager {
         return KeyExchangeManager()
     }
     */
