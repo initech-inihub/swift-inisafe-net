@@ -7,97 +7,108 @@
 
 import iniNet
 
+// MARK: - 에러 정의
+public enum InisafeNetError: Error {
+    case initializationFailed(Int32)
+    case ctxCreationFailed(Int32)
+    case encryptionFailed(Int32)
+    case decryptionFailed(Int32)
+    case invalidInput
+}
+
+// MARK: - net_ctx 래퍼
+public final class NetContext {
+    private let ctx: UnsafeMutablePointer<net_ctx>
+
+    init(ctx: UnsafeMutablePointer<net_ctx>) {
+        self.ctx = ctx
+    }
+
+    deinit {
+        INL_Free_Ctx(ctx)
+    }
+
+    func pointer() -> UnsafeMutablePointer<net_ctx> {
+        return ctx
+    }
+}
+
+// MARK: - InisafeNet
 public class InisafeNet {
     public init() {}
-    
-    @discardableResult
-    public func initialize(type: Int, configPath: String, licensePath: String) -> Int32 {
-        return configPath.withCString { confCString in
+
+    public func initialize(type: Int32, configPath: String, licensePath: String) -> Result<Void, InisafeNetError> {
+        let result = configPath.withCString { confCString in
             licensePath.withCString { licCString in
-                INL_Initialize(Int32(type), UnsafeMutablePointer(mutating: confCString), UnsafeMutablePointer(mutating: licCString))
+                INL_Initialize(type, UnsafeMutablePointer(mutating: confCString), UnsafeMutablePointer(mutating: licCString))
             }
         }
-    }
-    
-    public func createNewCtx(type: Int32) -> UnsafeMutablePointer<net_ctx>? {
-        var ctxPtr: UnsafeMutablePointer<net_ctx>? = nil
 
+        return result == 0 ? .success(()) : .failure(.initializationFailed(result))
+    }
+
+    public func createContext(type: Int32) -> Result<NetContext, InisafeNetError> {
+        var ctxPtr: UnsafeMutablePointer<net_ctx>? = nil
         let result = INL_New_Ctx(type, &ctxPtr)
 
-        guard result == 0, let validCtx = ctxPtr else {
-            return nil
+        guard result == 0, let ctx = ctxPtr else {
+            return .failure(.ctxCreationFailed(result))
         }
 
-        return validCtx
-    }
-    
-    @discardableResult
-    public func setClientVersion(ctx: UnsafeMutablePointer<net_ctx>, version: String) -> Int32 {
-        return version.withCString { cString in
-            INL_SetClientVer(ctx, UnsafeMutablePointer(mutating: cString))
-        }
-    }
-    
-    public func freeBuffer(_ pointer: UnsafeMutablePointer<UInt8>?) {
-        guard let ptr = pointer else { return }
-        INL_Free_Buf(ptr)
+        return .success(NetContext(ctx: ctx))
     }
 
-    
-    @discardableResult
-    public func freeCtx(_ ctx: UnsafeMutablePointer<net_ctx>?) -> Int32? {
-        guard let ctx = ctx else {
-            return nil
+    public func setClientVersion(ctx: NetContext, version: String) -> Result<Void, InisafeNetError> {
+        let result = version.withCString {
+            INL_SetClientVer(ctx.pointer(), UnsafeMutablePointer(mutating: $0))
         }
-        return INL_Free_Ctx(ctx)
+
+        return result == 0 ? .success(()) : .failure(.invalidInput)
     }
-    
-    public func encrypt(ctx: UnsafeMutablePointer<net_ctx>, plaintextPtr: UnsafeMutablePointer<UInt8>, plaintextLen: Int32) -> Data? {
+
+    public func encrypt(ctx: NetContext, plaintext: Data) -> Result<Data, InisafeNetError> {
         var ciphertextPtr: UnsafeMutablePointer<UInt8>? = nil
         var ciphertextLen: Int32 = 0
 
-        let result = INL_Encrypt(ctx, plaintextPtr, plaintextLen, &ciphertextPtr, &ciphertextLen)
+        let result = plaintext.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
+            INL_Encrypt(ctx.pointer(),
+                        UnsafeMutablePointer(mutating: ptr.bindMemory(to: UInt8.self).baseAddress),
+                        Int32(plaintext.count),
+                        &ciphertextPtr,
+                        &ciphertextLen)
+        }
 
         guard result == 0, let ct = ciphertextPtr else {
-            return nil
+            return .failure(.encryptionFailed(result))
         }
 
-        defer {
-            INL_Free_Buf(ct)
-        }
+        let data = Data(bytesNoCopy: ct, count: Int(ciphertextLen), deallocator: .custom { ptr, _ in
+            INL_Free_Buf(ptr.assumingMemoryBound(to: UInt8.self))
+        })
 
-        return Data(bytes: ct, count: Int(ciphertextLen))
+        return .success(data)
     }
-    
-    public func decrypt(ctx: UnsafeMutablePointer<net_ctx>, ciphertextPtr: UnsafeMutablePointer<UInt8>, ciphertextLen: Int32) -> Data? {
+
+    public func decrypt(ctx: NetContext, ciphertext: Data) -> Result<Data, InisafeNetError> {
         var plaintextPtr: UnsafeMutablePointer<UInt8>? = nil
         var plaintextLen: Int32 = 0
 
-        let result = INL_Decrypt(ctx, ciphertextPtr, ciphertextLen, &plaintextPtr, &plaintextLen)
+        let result = ciphertext.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
+            INL_Decrypt(ctx.pointer(),
+                        UnsafeMutablePointer(mutating: ptr.bindMemory(to: UInt8.self).baseAddress),
+                        Int32(ciphertext.count),
+                        &plaintextPtr,
+                        &plaintextLen)
+        }
 
         guard result == 0, let pt = plaintextPtr else {
-            return nil
+            return .failure(.decryptionFailed(result))
         }
 
-        defer {
-            INL_Free_Buf(pt)
-        }
+        let data = Data(bytesNoCopy: pt, count: Int(plaintextLen), deallocator: .custom { ptr, _ in
+            INL_Free_Buf(ptr.assumingMemoryBound(to: UInt8.self))
+        })
 
-        return Data(bytes: pt, count: Int(plaintextLen))
+        return .success(data)
     }
-    
-    public func handshakeManager() -> HandshakeManager {
-        return HandshakeManager()
-    }
-
-//TODO: - KeyFix, KeyExchange
-    /*
-    public func keyFixManager() -> KeyFixManager {
-        return KeyFixManager()
-    }
-
-    public func keyExchangeManager() -> KeyExchangeManager {
-        return KeyExchangeManager()
-    }
-    */
 }
