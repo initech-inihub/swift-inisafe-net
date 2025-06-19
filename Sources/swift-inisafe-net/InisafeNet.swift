@@ -111,4 +111,8 @@ public class InisafeNet {
 
         return .success(data)
     }
+    
+    public func handshakeManager() -> HandshakeManager {
+        return HandshakeManager()
+    }
 }
