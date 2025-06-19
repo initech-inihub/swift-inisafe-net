@@ -5,21 +5,12 @@
 //  Created by zongbeen.han on 2025/06/17.
 //
 
-
-
 import iniNet
-
-public enum HandshakeError: Error {
-    case initFailed(Int32)
-    case updateFailed(Int32)
-    case finalizeFailed(Int32)
-    case invalidInput
-}
 
 public class HandshakeManager {
     public init() {}
     
-    public func initHandshake(ctx: NetContext, input: Data?) -> Result<Data, HandshakeError> {
+    public func initHandshake(ctx: NetContext, input: Data?) -> Result<Data, InisafeNetError> {
         var outputPtr: UnsafeMutablePointer<UInt8>? = nil
         var outputLen: Int32 = 0
         
@@ -32,7 +23,7 @@ public class HandshakeManager {
         } ?? INL_Handshake_Init(ctx.pointer(), nil, 0, &outputPtr, &outputLen)
 
         guard inputResult == 0, let output = outputPtr else {
-            return .failure(.initFailed(inputResult))
+            return .failure(.INISAFE_NET_HANDSHAKE_INIT_ERROR(inputResult))
         }
         
         let data = Data(bytesNoCopy: output, count: Int(outputLen), deallocator: .custom { ptr, _ in
@@ -42,7 +33,7 @@ public class HandshakeManager {
         return .success(data)
     }
     
-    public func updateHandshake(ctx: NetContext, input: Data) -> Result<Data, HandshakeError> {
+    public func updateHandshake(ctx: NetContext, input: Data) -> Result<Data, InisafeNetError> {
         var outputPtr: UnsafeMutablePointer<UInt8>? = nil
         var outputLen: Int32 = 0
         
@@ -55,7 +46,7 @@ public class HandshakeManager {
         }
         
         guard result == 0, let output = outputPtr else {
-            return .failure(.updateFailed(result))
+            return .failure(.INISAFE_NET_HANDSHAKE_UPDATE_ERROR(result))
         }
         
         let data = Data(bytesNoCopy: output, count: Int(outputLen), deallocator: .custom { ptr, _ in
@@ -65,7 +56,7 @@ public class HandshakeManager {
         return .success(data)
     }
     
-    public func finalizeHandshake(ctx: NetContext, input: Data) -> Result<Data, HandshakeError> {
+    public func finalizeHandshake(ctx: NetContext, input: Data) -> Result<Data, InisafeNetError> {
         var outputPtr: UnsafeMutablePointer<UInt8>? = nil
         var outputLen: Int32 = 0
         
@@ -78,7 +69,7 @@ public class HandshakeManager {
         }
         
         guard result == 0, let output = outputPtr else {
-            return .failure(.finalizeFailed(result))
+            return .failure(.INISAFE_NET_HANDSHAKE_FINAL_ERROR(result))
         }
         
         let data = Data(bytesNoCopy: output, count: Int(outputLen), deallocator: .custom { ptr, _ in

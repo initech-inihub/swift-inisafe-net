@@ -9,11 +9,14 @@ import iniNet
 
 // MARK: - 에러 정의
 public enum InisafeNetError: Error {
-    case initializationFailed(Int32)
-    case ctxCreationFailed(Int32)
-    case encryptionFailed(Int32)
-    case decryptionFailed(Int32)
-    case invalidInput
+    case INISAFE_NET_INIT_ERROR(Int32)
+    case INISAFE_NET_CTX_ERROR(Int32)
+    case INISAFE_NET_ENCRYPT_ERROR(Int32)
+    case INISAFE_NET_DECRYPT_ERROR(Int32)
+    case INISAFE_NET_HANDSHAKE_INIT_ERROR(Int32)
+    case INISAFE_NET_HANDSHAKE_UPDATE_ERROR(Int32)
+    case INISAFE_NET_HANDSHAKE_FINAL_ERROR(Int32)
+    case INISAFE_NET_INIVALID_INPUT_ERROR
 }
 
 // MARK: - net_ctx 래퍼
@@ -44,7 +47,7 @@ public class InisafeNet {
             }
         }
 
-        return result == 0 ? .success(()) : .failure(.initializationFailed(result))
+        return result == 0 ? .success(()) : .failure(.INISAFE_NET_INIT_ERROR(result))
     }
 
     public func createContext(type: Int32) -> Result<NetContext, InisafeNetError> {
@@ -52,7 +55,7 @@ public class InisafeNet {
         let result = INL_New_Ctx(type, &ctxPtr)
 
         guard result == 0, let ctx = ctxPtr else {
-            return .failure(.ctxCreationFailed(result))
+            return .failure(.INISAFE_NET_CTX_ERROR(result))
         }
 
         return .success(NetContext(ctx: ctx))
@@ -63,7 +66,7 @@ public class InisafeNet {
             INL_SetClientVer(ctx.pointer(), UnsafeMutablePointer(mutating: $0))
         }
 
-        return result == 0 ? .success(()) : .failure(.invalidInput)
+        return result == 0 ? .success(()) : .failure(.INISAFE_NET_INIVALID_INPUT_ERROR)
     }
 
     public func encrypt(ctx: NetContext, plaintext: Data) -> Result<Data, InisafeNetError> {
@@ -79,7 +82,7 @@ public class InisafeNet {
         }
 
         guard result == 0, let ct = ciphertextPtr else {
-            return .failure(.encryptionFailed(result))
+            return .failure(.INISAFE_NET_ENCRYPT_ERROR(result))
         }
 
         let data = Data(bytesNoCopy: ct, count: Int(ciphertextLen), deallocator: .custom { ptr, _ in
@@ -102,7 +105,7 @@ public class InisafeNet {
         }
 
         guard result == 0, let pt = plaintextPtr else {
-            return .failure(.decryptionFailed(result))
+            return .failure(.INISAFE_NET_DECRYPT_ERROR(result))
         }
 
         let data = Data(bytesNoCopy: pt, count: Int(plaintextLen), deallocator: .custom { ptr, _ in
